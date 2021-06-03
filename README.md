@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Getting Started with Dockerized Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). The project is then containerized with docker setup, so that all development and testing can happen within a container
 
