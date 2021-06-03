@@ -18,12 +18,20 @@ case "$1" in
         ;;
 esac
 
+DOCKER_ARGS="--rm --user ${UID} -p 3000:3000 --workdir=/opt/dockerized-cra/app"
+
+if [ -t 1 ]; then
+  DOCKER_ARGS="${DOCKER_ARGS} -it"
+fi
+
+# Bind host directory to docker container, so that changes made are visible on both sides.
+DOCKER_ARGS="${DOCKER_ARGS} -v ${BUILD_ROOT}:/opt/dockerized-cra/app"
+
+# This empty bind-mount blocks the host node_modules from being visible inside the container
+DOCKER_ARGS="${DOCKER_ARGS} -v /opt/dockerized-cra/node_modules"
+
 if [[ -n $RUN_COMMAND ]]; then
-    docker run -it --rm \
-    --user $UID \
-    -v ${BUILD_ROOT}:/opt/dockerized-cra/app \
-    -v /opt/dockerized-cra/app/node_modules \
-    -p 3000:3000 \
+    docker run $DOCKER_ARGS \
     $DOCKER_REPO:$BRANCH \
     ${RUN_COMMAND}
 fi
