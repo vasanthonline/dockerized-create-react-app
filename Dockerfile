@@ -7,15 +7,12 @@ RUN adduser -u $UID --disabled-password --gecos "" dockerized-cra-user
 RUN chown -R dockerized-cra-user /opt/dockerized-cra
 
 USER dockerized-cra-user
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock /opt/dockerized-cra/
 RUN yarn install && yarn cache clean --all
 ENV PATH /opt/dockerized-cra/node_modules/.bin:$PATH
 
-USER dockerized-cra-user
 WORKDIR /opt/dockerized-cra/app
-COPY . .
-RUN mkdir -p /opt/dockerized-cra/app/node_modules/.cache
-RUN chown -R dockerized-cra-user /opt/dockerized-cra/app/node_modules/.cache
+COPY . /opt/dockerized-cra/app
 
 
 
