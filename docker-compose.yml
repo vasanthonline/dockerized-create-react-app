@@ -1,0 +1,12 @@
+version: '3'
+services:
+  client:
+    image: "${DOCKER_REPO}:${BRANCH}"
+    build:
+      dockerfile: Dockerfile
+      context: .
+    # User is needed here, as assets end up on the host system.
+    user: ${CURRENT_UID}
+    volumes:
+      - .:/opt/dockerized-cra
+    command: yarn
